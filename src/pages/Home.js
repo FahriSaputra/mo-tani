@@ -7,6 +7,11 @@ import { CardProduct, Container } from "../components";
 //Layout
 import MainLayout from "../layout/MainLayout";
 
+//hooks
+import { useGetUsers } from "../hooks/queries/Test.queries";
+
+import TestServices from "../services/TestServices";
+
 const SectionList = memo((props) => {
   const { data, title, onClick } = props;
   return (
@@ -35,6 +40,10 @@ const JumbotronSection = memo(() => {
 
 const HomePages = () => {
   const navigate = useNavigate();
+  const users = useGetUsers();
+
+  console.log(users, "users");
+  console.log(TestServices, "TestServices");
 
   const navigateTo = () => {
     navigate("/product/1");
