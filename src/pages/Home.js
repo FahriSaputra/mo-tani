@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 //Components
@@ -8,18 +8,24 @@ import { CardProduct, Container } from "../components";
 import MainLayout from "../layout/MainLayout";
 
 //hooks
-import { useGetUsers } from "../hooks/queries/Test.queries";
-
-import TestServices from "../services/TestServices";
+import { useGetProducts } from "../hooks/queries/Product.queries";
 
 const SectionList = memo((props) => {
-  const { data, title, onClick } = props;
+  const { data, title } = props;
+  const navigate = useNavigate();
+  const navigateTo = useCallback(
+    (slug) => {
+      navigate(`/product/${slug}`);
+    },
+    [navigate]
+  );
+
   return (
     <div className="px-3 mt-3 text-xl">
       <h1>{title}</h1>
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 lg:gap-5 gap-x-3 gap-y-3 mt-3">
-        {data?.map(() => (
-          <CardProduct onClick={onClick} />
+        {data?.map((item) => (
+          <CardProduct onClick={() => navigateTo(item.slug)} product={item} />
         ))}
       </div>
     </div>
@@ -31,7 +37,9 @@ const JumbotronSection = memo(() => {
     <div className="flex items-center justify-center px-3 mt-3 bg-grey-100">
       <img
         className="object-cover w-full max-h-80"
-        src="https://awsimages.detik.net.id/community/media/visual/2020/09/02/traktor-listrik-1_169.png?w=700&q=90"
+        src={
+          "http://127.0.0.1:8000/storage/images/A5OrOcsJ9RgylP9xAeBP3AD00YFVxDvODG6NwzPo.png"
+        }
         alt="jumbotron"
       />
     </div>
@@ -39,31 +47,16 @@ const JumbotronSection = memo(() => {
 });
 
 const HomePages = () => {
-  const navigate = useNavigate();
-  const users = useGetUsers();
-
-  console.log(users, "users");
-  console.log(TestServices, "TestServices");
-
-  const navigateTo = () => {
-    navigate("/product/1");
-  };
+  const { data } = useGetProducts();
+  const products = data?.data?.data;
 
   return (
     <MainLayout>
       <Container>
         <JumbotronSection />
-        <SectionList
-          title="Alat Berat"
-          data={[1, 2, 3, 4, 5]}
-          onClick={navigateTo}
-        />
+        <SectionList title="Alat Berat" data={products} />
 
-        <SectionList
-          title="Alat Bantu"
-          data={[1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1]}
-          onClick={navigateTo}
-        />
+        <SectionList title="Alat Bantu" data={products} />
       </Container>
     </MainLayout>
   );

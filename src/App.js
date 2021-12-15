@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Cart from "./pages/Cart";
+
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
+import Cart from "./pages/Cart";
+import AddProduct from "./pages/AddProduct";
 
 const ScrollToTop = ({ children }) => {
   const { pathname } = useLocation();
@@ -18,7 +20,13 @@ const ScrollToTop = ({ children }) => {
   return <>{children}</>;
 };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: Infinity,
+    },
+  },
+});
 
 const App = () => {
   return (
@@ -31,6 +39,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/add-product" element={<AddProduct />} />
           </Routes>
         </ScrollToTop>
       </BrowserRouter>

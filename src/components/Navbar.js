@@ -1,9 +1,36 @@
-import { memo, useCallback, useState, useEffect } from "react";
+import { memo, useCallback, useState, useEffect, useContext } from "react";
 import { IoMenu } from "react-icons/all";
-import { Link } from "react-router-dom";
+import { QueryClient } from "react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogout } from "../hooks/mutations/Auth.mutations";
+import { useGetUser } from "../hooks/queries/User.queries";
+import { UserContext } from "../context/UserContext";
 
 const Navbar = memo(() => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const logout = useLogout();
+  const user = useGetUser();
+  const queryClient = new QueryClient();
+  const [state, dispatch] = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  const onLogout = () => {
+    logout.mutate("", {
+      onSuccess: () => {
+        dispatch({
+          type: "LOGOUT",
+        });
+        queryClient.clear();
+        queryClient.removeQueries("user");
+        window.alert("Success");
+        navigate("/");
+      },
+      onError: () => {
+        window.alert("Error");
+      },
+    });
+  };
 
   const onMenuToggle = useCallback(() => {
     setMenuVisible(!menuVisible);
@@ -32,12 +59,27 @@ const Navbar = memo(() => {
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
+          {state.isLogin ? (
+            <>
+              <li>
+                <Link to="/register">Profile</Link>
+              </li>
+              <li>
+                <p role="button" onClick={onLogout}>
+                  Logout
+                </p>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            </>
+          )}
         </ul>
         <div className="sm:hidden">
           <IoMenu size="1.3em" onClick={onMenuToggle} />
@@ -50,12 +92,27 @@ const Navbar = memo(() => {
               Home
             </Link>
           </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
+          {state.isLogin ? (
+            <>
+              <li>
+                <Link to="/register">Profile</Link>
+              </li>
+              <li>
+                <p role="button" onClick={onLogout}>
+                  Logout
+                </p>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            </>
+          )}
         </ul>
       )}
     </nav>
