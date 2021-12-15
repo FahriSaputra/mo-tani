@@ -5,7 +5,7 @@ const PrimaryButton = memo((props) => {
 
   return (
     <button
-      className="w-full bg-yellow-500 px-2 py-1 text-sm md:text-base"
+      className="min-w-full bg-yellow-500 px-2 py-1 text-sm md:text-base"
       onClick={onClick}
     >
       {title}

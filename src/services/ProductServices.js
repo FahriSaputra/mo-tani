@@ -5,8 +5,14 @@ const getProducts = async () => {
   return response;
 };
 
+const getDetailProduct = async (slug) => {
+  const response = await ApiHelpers.get(`/product/${slug}`);
+  return response;
+};
+
 const ProductServices = {
   getProducts,
+  getDetailProduct,
 };
 
 export default ProductServices;
