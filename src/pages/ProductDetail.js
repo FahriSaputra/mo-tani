@@ -1,21 +1,24 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useContext } from "react";
 
 import { useNavigate, useParams } from "react-router";
 import { PrimaryButton, ButtonCounter } from "../components";
 import MainLayout from "../layout/MainLayout";
 import { useGetDetailProduct } from "../hooks/queries/Product.queries";
+import { useAddToCart } from "../hooks/mutations/Cart.mutations";
 import { formatIdr } from "../utility/TextUtility";
+import { UserContext } from "../context/UserContext";
 
 const ProductDetail = () => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
+  const [state] = useContext(UserContext);
 
   const navigate = useNavigate();
   const params = useParams();
-  console.log(params, "params");
+
+  const addToCart = useAddToCart();
   const { data } = useGetDetailProduct(params.id);
   const detailProduct = data?.data?.data;
 
-  console.log(data, "getDetailProduct");
   const onDecrement = useCallback((val) => {
     setValue(val);
   }, []);
@@ -24,13 +27,44 @@ const ProductDetail = () => {
     setValue(val);
   }, []);
 
+  const onRent = useCallback(() => {
+    if (!state.isLogin) {
+      window.alert("harus login");
+    } else {
+      addToCart.mutate(
+        {
+          user_id: state?.user?.id,
+          product_id: detailProduct?.id,
+          quantity: value,
+          duration: 1,
+          total: detailProduct?.price * value * 3,
+        },
+        {
+          onSuccess: () => {
+            window.alert("Success");
+            navigate("/cart");
+          },
+          onError: () => window.alert("Gagal"),
+        }
+      );
+    }
+  }, [
+    addToCart,
+    detailProduct?.id,
+    detailProduct?.price,
+    navigate,
+    state.isLogin,
+    state?.user?.id,
+    value,
+  ]);
+
   return (
     <MainLayout>
       <div className="px-3 my-3">
         <div className="flex flex-col md:flex-row">
           <img
             className="w-full md:w-1/2 md:mr-5"
-            src={`http://127.0.0.1:8000/storage/images/${detailProduct.image}`}
+            src={`http://127.0.0.1:8000/storage/images/${detailProduct?.image}`}
             alt="traktor"
           />
           <div>
@@ -43,13 +77,13 @@ const ProductDetail = () => {
             <p className="mt-2">Sisa: {detailProduct?.stock}</p>
 
             <div className="mt-3 md:w-1/2 flex flex-row">
-              <PrimaryButton title="Rent" onClick={() => navigate("/cart")} />
+              <PrimaryButton title="Rent" onClick={onRent} />
               <div className="mr-5" />
               <ButtonCounter
                 onDecrement={onDecrement}
                 onIncrement={onIncrement}
                 value={value}
-                maxValue={detailProduct.stock}
+                maxValue={detailProduct?.stock}
               />
             </div>
           </div>
