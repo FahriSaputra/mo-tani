@@ -38,7 +38,7 @@ const JumbotronSection = memo(() => {
       <img
         className="object-cover w-full max-h-80"
         src={
-          "http://127.0.0.1:8000/storage/images/A5OrOcsJ9RgylP9xAeBP3AD00YFVxDvODG6NwzPo.png"
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTPcedZZvXxrSvJiad6xYndiGmLv6VKQMf-Q&usqp=CAU"
         }
         alt="jumbotron"
       />
@@ -49,14 +49,28 @@ const JumbotronSection = memo(() => {
 const HomePages = () => {
   const { data } = useGetProducts();
   const products = data?.data?.data;
+  console.log(products, "P");
+
+  const filterByCommodity = useCallback(
+    (commodity) => {
+      return products?.filter((product) => product?.commodity === commodity);
+    },
+    [products]
+  );
 
   return (
     <MainLayout>
       <Container>
         <JumbotronSection />
-        <SectionList title="Alat Berat" data={products} />
+        <SectionList
+          title="Tanaman Pangan"
+          data={filterByCommodity("tanaman pangan")}
+        />
 
-        <SectionList title="Alat Bantu" data={products} />
+        <SectionList
+          title="Perkebunan"
+          data={filterByCommodity("perkebunan")}
+        />
       </Container>
     </MainLayout>
   );
