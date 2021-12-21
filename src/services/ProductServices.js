@@ -1,4 +1,4 @@
-import ApiHelpers from "../helpers/ApiHelpers";
+import ApiHelpers, { setHeader } from "../helpers/ApiHelpers";
 
 const getProducts = async () => {
   const response = await ApiHelpers.get("/list");
@@ -10,9 +10,15 @@ const getDetailProduct = async (slug) => {
   return response;
 };
 
+const addProduct = async (data, config) => {
+  const response = await ApiHelpers.post("/product/add", data, config);
+  return response;
+};
+
 const ProductServices = {
   getProducts,
   getDetailProduct,
+  addProduct,
 };
 
 export default ProductServices;

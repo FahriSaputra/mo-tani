@@ -1,5 +1,5 @@
 import { memo, useCallback, useState, useEffect, useContext } from "react";
-import { IoMenu } from "react-icons/all";
+// import { IoMenu } from "react-icons/all";
 import { QueryClient } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../hooks/mutations/Auth.mutations";
@@ -81,9 +81,9 @@ const Navbar = memo(() => {
             </>
           )}
         </ul>
-        <div className="sm:hidden">
+        {/* <div className="sm:hidden">
           <IoMenu size="1.3em" onClick={onMenuToggle} />
-        </div>
+        </div> */}
       </div>
       {menuVisible && (
         <ul>
