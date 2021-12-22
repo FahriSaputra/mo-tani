@@ -13,25 +13,6 @@ const Navbar = memo(() => {
   const queryClient = new QueryClient();
   const [state, dispatch] = useContext(UserContext);
 
-  const navigate = useNavigate();
-
-  const onLogout = () => {
-    logout.mutate("", {
-      onSuccess: () => {
-        dispatch({
-          type: "LOGOUT",
-        });
-        queryClient.clear();
-        queryClient.removeQueries("user");
-        window.alert("Success");
-        navigate("/");
-      },
-      onError: () => {
-        window.alert("Error");
-      },
-    });
-  };
-
   const onMenuToggle = useCallback(() => {
     setMenuVisible(!menuVisible);
   }, [menuVisible]);
@@ -62,12 +43,10 @@ const Navbar = memo(() => {
           {state.isLogin ? (
             <>
               <li>
-                <Link to="/register">Profile</Link>
+                <Link to="/profile">Profile</Link>
               </li>
               <li>
-                <p role="button" onClick={onLogout}>
-                  Logout
-                </p>
+                <Link to="/cart">Cart</Link>
               </li>
             </>
           ) : (
@@ -98,9 +77,7 @@ const Navbar = memo(() => {
                 <Link to="/register">Profile</Link>
               </li>
               <li>
-                <p role="button" onClick={onLogout}>
-                  Logout
-                </p>
+                <Link to="/cart">Cart</Link>
               </li>
             </>
           ) : (

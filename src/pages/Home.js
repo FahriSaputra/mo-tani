@@ -49,7 +49,6 @@ const JumbotronSection = memo(() => {
 const HomePages = () => {
   const { data } = useGetProducts();
   const products = data?.data?.data;
-  console.log(products, "P");
 
   const filterByCommodity = useCallback(
     (commodity) => {
