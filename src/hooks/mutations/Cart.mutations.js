@@ -3,4 +3,6 @@ import CartServices from "../../services/CartService";
 
 const useAddToCart = () => useMutation(CartServices.addToCart);
 
-export { useAddToCart };
+const useDeleteFromCart = () => useMutation(CartServices.deleteFromCart);
+
+export { useAddToCart, useDeleteFromCart };
