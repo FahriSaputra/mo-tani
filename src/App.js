@@ -16,6 +16,7 @@ import Register from "./pages/Register";
 import Cart from "./pages/Cart";
 import AddProduct from "./pages/AddProduct";
 import Profile from "./pages/Profile";
+import Checkout from "./pages/Checkout";
 
 export const ScrollToTop = ({ children }) => {
   const { pathname } = useLocation();
@@ -97,6 +98,14 @@ const App = () => {
               element={
                 <AuthRoute reverse={true}>
                   <Profile />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <AuthRoute reverse={true}>
+                  <Checkout />
                 </AuthRoute>
               }
             />

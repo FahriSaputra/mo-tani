@@ -17,8 +17,8 @@ const CardCart = memo((props) => {
   }, [data?.id, deleteFromCart]);
 
   const onCheckout = useCallback(() => {
-    navigate("/checkout");
-  }, [navigate]);
+    navigate("/checkout", { state: data });
+  }, [data, navigate]);
 
   return (
     <>
