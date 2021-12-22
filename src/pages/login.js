@@ -29,10 +29,8 @@ const Login = () => {
   );
 
   const onSubmit = (e) => {
-    console.log("pressed");
     login.mutate(form, {
       onSuccess: (data) => {
-        console.log(data, "data login");
         localStorage.setItem("token", data?.data?.token);
         dispatch({
           type: "LOGIN",

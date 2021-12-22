@@ -26,7 +26,6 @@ const AddProduct = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("Hello");
     const formData = new FormData();
     formData.append("name", form?.name);
     formData.append("price", parseInt(form?.price));

@@ -9,11 +9,9 @@ const initialState = {
 
 const reducer = (state, action) => {
   const { type, payload } = action;
-  console.log(payload, "payload");
   switch (type) {
     case "LOGIN":
       localStorage.setItem("token", payload.data.token);
-      console.log("Dispatch jalan");
       return {
         ...state,
         isLogin: true,

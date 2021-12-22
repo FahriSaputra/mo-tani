@@ -20,7 +20,6 @@ export const setAuthToken = (token) => {
 export const setHeader = (name, value) => {
   if (name && value) {
     ApiHelpers.defaults.headers.post["Content-Type"] = "multipart/form-data";
-    console.log(ApiHelpers.defaults.headers, "headers");
   } else {
     delete ApiHelpers.defaults.headers.post["Content-Type"];
   }

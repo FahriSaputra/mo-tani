@@ -67,9 +67,7 @@ const Navbar = memo(() => {
       {menuVisible && (
         <ul>
           <li>
-            <Link to="/" onClick={() => console.log("klik")}>
-              Home
-            </Link>
+            <Link to="/">Home</Link>
           </li>
           {state.isLogin ? (
             <>
