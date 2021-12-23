@@ -31,12 +31,18 @@ const Navbar = memo(() => {
           <h1 className="text-white text-lg font-bold">Mo-Tani</h1>
         </div>
         <ul className="hidden sm:inline-flex gap-x-3">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
+          {state?.user?.role === "user" && (
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+          )}
+
           {state.isLogin ? (
             state?.user?.role.toLowerCase() === "admin" ? (
               <>
+                <li>
+                  <Link to="/products">Products</Link>
+                </li>
                 <li>
                   <Link to="/profile">Profile</Link>
                 </li>
@@ -46,6 +52,9 @@ const Navbar = memo(() => {
               </>
             ) : (
               <>
+                <li>
+                  <Link to="/checkout">Checkout</Link>
+                </li>
                 <li>
                   <Link to="/profile">Profile</Link>
                 </li>

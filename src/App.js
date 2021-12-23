@@ -78,7 +78,14 @@ const App = () => {
       <BrowserRouter>
         <ScrollToTop>
           <Routes>
-            <Route index element={<Home />} />
+            <Route
+              index
+              element={
+                <AuthRoute reverse={true}>
+                  <Home />
+                </AuthRoute>
+              }
+            />
             <Route
               path="/login"
               element={

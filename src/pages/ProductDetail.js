@@ -105,7 +105,7 @@ const ProductDetail = () => {
                   </div>
                 </div>
               ) : (
-                <>
+                <div className="flex">
                   <PrimaryButton title="Rent" onClick={onRent} />
                   <div className="mr-5" />
                   <ButtonCounter
@@ -114,7 +114,7 @@ const ProductDetail = () => {
                     value={value}
                     maxValue={detailProduct?.stock}
                   />
-                </>
+                </div>
               )}
             </div>
           </div>
