@@ -19,6 +19,7 @@ import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
 import Dashboard from "./pages/Dashboard";
 import ProductPages from "./pages/Products";
+import CheckoutStatus from "./pages/CheckoutStatus";
 
 export const ScrollToTop = ({ children }) => {
   const { pathname } = useLocation();
@@ -157,6 +158,14 @@ const App = () => {
                 <AdminRoute>
                   <ProductPages />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path="/checkout-status"
+              element={
+                <AuthRoute reverse={true}>
+                  <CheckoutStatus />
+                </AuthRoute>
               }
             />
           </Routes>

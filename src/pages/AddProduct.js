@@ -41,7 +41,7 @@ const AddProduct = () => {
       onError: (e) => console.warn(JSON.stringify(e, null, 2), "Error"),
       onSuccess: () => {
         window.alert("Success");
-        navigate("/");
+        navigate("/products");
       },
     });
   };

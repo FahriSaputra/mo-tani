@@ -28,10 +28,12 @@ const Navbar = memo(() => {
     <nav className="px-3 sm:px-5 bg-yellow-500">
       <div className="flex items-center justify-between h-12 ">
         <div>
-          <h1 className="text-white text-lg font-bold">Mo-Tani</h1>
+          <h1 className="text-white text-lg font-bold">
+            <Link to="/">Mo-Tani</Link>
+          </h1>
         </div>
         <ul className="hidden sm:inline-flex gap-x-3">
-          {state?.user?.role === "user" && (
+          {state?.user?.role === "user" && state?.isLogin && (
             <li>
               <Link to="/">Home</Link>
             </li>
@@ -53,7 +55,7 @@ const Navbar = memo(() => {
             ) : (
               <>
                 <li>
-                  <Link to="/checkout">Checkout</Link>
+                  <Link to="/checkout-status">Checkout</Link>
                 </li>
                 <li>
                   <Link to="/profile">Profile</Link>
