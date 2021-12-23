@@ -17,6 +17,7 @@ import Cart from "./pages/Cart";
 import AddProduct from "./pages/AddProduct";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
+import Dashboard from "./pages/Dashboard";
 
 export const ScrollToTop = ({ children }) => {
   const { pathname } = useLocation();
@@ -96,7 +97,7 @@ const App = () => {
             <Route
               path="/profile"
               element={
-                <AuthRoute reverse={true}>
+                <AuthRoute reverse={true} isAllow={true}>
                   <Profile />
                 </AuthRoute>
               }
@@ -110,12 +111,27 @@ const App = () => {
               }
             />
             <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/cart"
+              element={
+                <AuthRoute reverse={true}>
+                  <Cart />
+                </AuthRoute>
+              }
+            />
             <Route
               path="/add-product"
               element={
                 <AdminRoute>
                   <AddProduct />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <AdminRoute>
+                  <Dashboard />
                 </AdminRoute>
               }
             />

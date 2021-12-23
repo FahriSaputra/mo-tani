@@ -1,17 +1,11 @@
 import { memo, useCallback, useState, useEffect, useContext } from "react";
 // import { IoMenu } from "react-icons/all";
-import { QueryClient } from "react-query";
-import { Link, useNavigate } from "react-router-dom";
-import { useLogout } from "../hooks/mutations/Auth.mutations";
-import { useGetUser } from "../hooks/queries/User.queries";
+import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const Navbar = memo(() => {
   const [menuVisible, setMenuVisible] = useState(false);
-  const logout = useLogout();
-  const user = useGetUser();
-  const queryClient = new QueryClient();
-  const [state, dispatch] = useContext(UserContext);
+  const [state] = useContext(UserContext);
 
   const onMenuToggle = useCallback(() => {
     setMenuVisible(!menuVisible);
@@ -41,14 +35,25 @@ const Navbar = memo(() => {
             <Link to="/">Home</Link>
           </li>
           {state.isLogin ? (
-            <>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link to="/cart">Cart</Link>
-              </li>
-            </>
+            state?.user?.role.toLowerCase() === "admin" ? (
+              <>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/cart">Cart</Link>
+                </li>
+              </>
+            )
           ) : (
             <>
               <li>
