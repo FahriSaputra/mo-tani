@@ -18,6 +18,7 @@ import AddProduct from "./pages/AddProduct";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
 import Dashboard from "./pages/Dashboard";
+import ProductPages from "./pages/Products";
 
 export const ScrollToTop = ({ children }) => {
   const { pathname } = useLocation();
@@ -128,10 +129,26 @@ const App = () => {
               }
             />
             <Route
+              path="/edit-product"
+              element={
+                <AdminRoute>
+                  <AddProduct />
+                </AdminRoute>
+              }
+            />
+            <Route
               path="/dashboard"
               element={
                 <AdminRoute>
                   <Dashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <AdminRoute>
+                  <ProductPages />
                 </AdminRoute>
               }
             />

@@ -10,8 +10,8 @@ import MainLayout from "../layout/MainLayout";
 //hooks
 import { useGetProducts } from "../hooks/queries/Product.queries";
 
-const SectionList = memo((props) => {
-  const { data, title } = props;
+export const SectionList = memo((props) => {
+  const { data, title, buttonTitle } = props;
   const navigate = useNavigate();
   const navigateTo = useCallback(
     (slug) => {
@@ -25,7 +25,11 @@ const SectionList = memo((props) => {
       <h1>{title}</h1>
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 lg:gap-5 gap-x-3 gap-y-3 mt-3">
         {data?.map((item) => (
-          <CardProduct onClick={() => navigateTo(item.slug)} product={item} />
+          <CardProduct
+            onClick={() => navigateTo(item.slug)}
+            product={item}
+            buttonTitle={buttonTitle}
+          />
         ))}
       </div>
     </div>

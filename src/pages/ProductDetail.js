@@ -5,8 +5,10 @@ import { PrimaryButton, ButtonCounter } from "../components";
 import MainLayout from "../layout/MainLayout";
 import { useGetDetailProduct } from "../hooks/queries/Product.queries";
 import { useAddToCart } from "../hooks/mutations/Cart.mutations";
+import { useDeleteProduct } from "../hooks/mutations/Product.mutations";
 import { formatIdr } from "../utility/TextUtility";
 import { UserContext } from "../context/UserContext";
+import { queryClient } from "../App";
 
 const ProductDetail = () => {
   const [value, setValue] = useState(1);
@@ -18,6 +20,7 @@ const ProductDetail = () => {
   const addToCart = useAddToCart();
   const { data } = useGetDetailProduct(params.id);
   const detailProduct = data?.data?.data;
+  const deleteProduct = useDeleteProduct();
 
   const onDecrement = useCallback((val) => {
     setValue(val);
@@ -58,6 +61,23 @@ const ProductDetail = () => {
     value,
   ]);
 
+  const onEdit = useCallback(() => {
+    navigate("/edit-product");
+  }, [navigate]);
+
+  const onDeleteProduct = useCallback(() => {
+    deleteProduct.mutate(detailProduct?.id);
+    if (deleteProduct.isSuccess) {
+      window.alert("Product has been deleted");
+      queryClient.invalidateQueries("products");
+      navigate("/products");
+    }
+
+    if (deleteProduct.isError) {
+      window.alert("Failed to delete product, try again later");
+    }
+  }, [deleteProduct, detailProduct?.id, navigate]);
+
   return (
     <MainLayout>
       <div className="px-3 my-3">
@@ -77,14 +97,25 @@ const ProductDetail = () => {
             <p className="mt-2">Sisa: {detailProduct?.stock}</p>
 
             <div className="mt-3 md:w-1/2 flex flex-row">
-              <PrimaryButton title="Rent" onClick={onRent} />
-              <div className="mr-5" />
-              <ButtonCounter
-                onDecrement={onDecrement}
-                onIncrement={onIncrement}
-                value={value}
-                maxValue={detailProduct?.stock}
-              />
+              {state?.user?.role.toLowerCase() === "admin" ? (
+                <div className="flex row">
+                  <PrimaryButton title="Edit" onClick={onEdit} />
+                  <div className="ml-5 w-16">
+                    <PrimaryButton title="Delete" onClick={onDeleteProduct} />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <PrimaryButton title="Rent" onClick={onRent} />
+                  <div className="mr-5" />
+                  <ButtonCounter
+                    onDecrement={onDecrement}
+                    onIncrement={onIncrement}
+                    value={value}
+                    maxValue={detailProduct?.stock}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

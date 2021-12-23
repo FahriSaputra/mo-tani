@@ -10,4 +10,6 @@ const useAddProduct = () =>
     })
   );
 
-export { useAddProduct };
+const useDeleteProduct = () => useMutation(ProductServices.deleteProduct);
+
+export { useAddProduct, useDeleteProduct };

@@ -1,4 +1,4 @@
-import ApiHelpers, { setHeader } from "../helpers/ApiHelpers";
+import ApiHelpers from "../helpers/ApiHelpers";
 
 const getProducts = async () => {
   const response = await ApiHelpers.get("/list");
@@ -15,10 +15,14 @@ const addProduct = async (data, config) => {
   return response;
 };
 
+const deleteProduct = async (id) =>
+  await ApiHelpers.delete(`/product/delete/${id}`);
+
 const ProductServices = {
   getProducts,
   getDetailProduct,
   addProduct,
+  deleteProduct,
 };
 
 export default ProductServices;

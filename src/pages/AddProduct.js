@@ -85,7 +85,7 @@ const AddProduct = () => {
                 value={form?.commodity}
               >
                 <optgroup label="Commodity">
-                  <option value="perkebunan">choose</option>
+                  <option value="">choose</option>
                   <option value="perkebunan">Farm</option>
                   <option value="tanaman pangan">Food Crops</option>
                 </optgroup>

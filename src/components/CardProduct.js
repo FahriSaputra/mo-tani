@@ -3,8 +3,8 @@ import { PrimaryButton } from "./index";
 import { useNavigate } from "react-router-dom";
 
 const CardProduct = memo((props) => {
-  const { product } = props;
-  const { image, name, price, slug } = product;
+  const { product, buttonTitle } = props;
+  const { image, name, price, slug, id } = product;
   const navigate = useNavigate();
   const formatPrice = new Intl.NumberFormat("id-ID", {
     maximumSignificantDigits: 3,
@@ -30,7 +30,10 @@ const CardProduct = memo((props) => {
         <h1 className="text-base mb-2">{name}</h1>
         <p className="text-sm text-yellow-500">Rp. {formatPrice}</p>
 
-        <PrimaryButton title="Rent" onClick={navigateTo} />
+        <PrimaryButton
+          title={!buttonTitle ? "Rent" : buttonTitle}
+          onClick={navigateTo}
+        />
       </div>
     </div>
   );
