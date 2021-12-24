@@ -106,7 +106,7 @@ const ProductDetail = () => {
                 </div>
               ) : (
                 <div className="flex">
-                  <PrimaryButton title="Rent" onClick={onRent} />
+                  <PrimaryButton title="Add To Cart" onClick={onRent} />
                   <div className="mr-5" />
                   <ButtonCounter
                     onDecrement={onDecrement}
