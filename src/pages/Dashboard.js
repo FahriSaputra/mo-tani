@@ -49,7 +49,7 @@ const Dashboard = () => {
   const onAddProduct = useCallback(() => {
     navigate("/add-product");
   }, [navigate]);
-
+  console.log(data, "Data");
   return (
     <MainLayout>
       <div className="flex row justify-between items-center mt-5">
@@ -65,6 +65,9 @@ const Dashboard = () => {
             <th class="border border-yellow-500 bg-yellow-500">id</th>
             <th class="border border-yellow-500 bg-yellow-500">Name</th>
             <th class="border border-yellow-500 bg-yellow-500">Proof</th>
+            <th class="border border-yellow-500 bg-yellow-500 w-64">
+              Detail User
+            </th>
             <th class="border border-yellow-500 bg-yellow-500">Product Name</th>
             <th class="border border-yellow-500 bg-yellow-500">Total</th>
             <th class="border border-yellow-500 bg-yellow-500">Quantity</th>
@@ -73,9 +76,9 @@ const Dashboard = () => {
           </tr>
         </thead>
         <tbody>
-          {checkout?.map((item) => (
+          {checkout?.map((item, index) => (
             <tr>
-              <td class="border border-gray-300 text-center">{item?.id}</td>
+              <td class="border border-gray-300 text-center">{index + 1}</td>
               <td class="border border-gray-300 text-center">
                 {item?.fullname}
               </td>
@@ -87,6 +90,9 @@ const Dashboard = () => {
                     className="w-24"
                   />
                 </div>
+              </td>
+              <td class="border border-gray-300 text-center">
+                {item?.handphone} / {item?.address}
               </td>
               <td class="border border-gray-300 text-center">{item?.name}</td>
               <td class="border border-gray-300 text-cente">{item?.total}</td>
