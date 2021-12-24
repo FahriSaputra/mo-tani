@@ -19,15 +19,14 @@ const Dashboard = () => {
 
   const onCancelCheckout = useCallback(
     (id) => {
-      cancelCheckout.mutate(id);
-      if (cancelCheckout?.isSuccess) {
-        queryClient.invalidateQueries("all-checkout");
-        window.alert("Berhasil guys");
-      }
-
-      if (cancelCheckout?.isError) {
-        window.alert("Error guys");
-      }
+      cancelCheckout.mutate(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries("all-checkout");
+        },
+        onError: () => {
+          window.alert("Error, Please try again later");
+        },
+      });
     },
     [cancelCheckout]
   );
@@ -35,17 +34,16 @@ const Dashboard = () => {
   const onConfirmCheckout = useCallback(
     (id) => {
       console.log(id, "id Mutation");
-      confirmCheckout.mutate(id);
-      if (confirmCheckout?.isSuccess) {
-        refetch();
-        window.alert("Berhasil guys");
-      }
-
-      if (confirmCheckout?.isError) {
-        window.alert("Error guys");
-      }
+      confirmCheckout.mutate(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries("all-checkout");
+        },
+        onError: () => {
+          window.alert("Error, Please try again later");
+        },
+      });
     },
-    [confirmCheckout, refetch]
+    [confirmCheckout]
   );
 
   const onAddProduct = useCallback(() => {
