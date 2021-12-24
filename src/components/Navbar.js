@@ -1,5 +1,4 @@
 import { memo, useCallback, useState, useEffect, useContext } from "react";
-// import { IoMenu } from "react-icons/all";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
@@ -76,24 +75,48 @@ const Navbar = memo(() => {
             </>
           )}
         </ul>
-        {/* <div className="sm:hidden">
-          <IoMenu size="1.3em" onClick={onMenuToggle} />
-        </div> */}
+        <div className="sm:hidden">
+          <img
+            role="button"
+            onClick={onMenuToggle}
+            src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/24/000000/external-mobile-application-hamburger-menu-setting-interface-basic-shadow-tal-revivo.png"
+          />
+        </div>
       </div>
       {menuVisible && (
         <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
+          {state?.user?.role === "user" && state?.isLogin && (
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+          )}
+
           {state.isLogin ? (
-            <>
-              <li>
-                <Link to="/register">Profile</Link>
-              </li>
-              <li>
-                <Link to="/cart">Cart</Link>
-              </li>
-            </>
+            state?.user?.role.toLowerCase() === "admin" ? (
+              <>
+                <li>
+                  <Link to="/products">Products</Link>
+                </li>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/checkout-status">Checkout</Link>
+                </li>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/cart">Cart</Link>
+                </li>
+              </>
+            )
           ) : (
             <>
               <li>
