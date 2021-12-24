@@ -62,20 +62,20 @@ const ProductDetail = () => {
   ]);
 
   const onEdit = useCallback(() => {
-    navigate("/edit-product");
-  }, [navigate]);
+    navigate("/edit-product", { state: detailProduct });
+  }, [detailProduct, navigate]);
 
   const onDeleteProduct = useCallback(() => {
-    deleteProduct.mutate(detailProduct?.id);
-    if (deleteProduct.isSuccess) {
-      window.alert("Product has been deleted");
-      queryClient.invalidateQueries("products");
-      navigate("/products");
-    }
-
-    if (deleteProduct.isError) {
-      window.alert("Failed to delete product, try again later");
-    }
+    deleteProduct.mutate(detailProduct?.id, {
+      onSuccess: () => {
+        window.alert("Product has been deleted");
+        queryClient.invalidateQueries("products");
+        navigate("/products");
+      },
+      onError: () => {
+        window.alert("Failed to delete product, try again later");
+      },
+    });
   }, [deleteProduct, detailProduct?.id, navigate]);
 
   return (

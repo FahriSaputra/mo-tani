@@ -18,11 +18,15 @@ const addProduct = async (data, config) => {
 const deleteProduct = async (id) =>
   await ApiHelpers.delete(`/product/delete/${id}`);
 
+const updateProduct = async ({ data, id }, config) =>
+  ApiHelpers.post(`/product/edit/${id}`, data, config);
+
 const ProductServices = {
   getProducts,
   getDetailProduct,
   addProduct,
   deleteProduct,
+  updateProduct,
 };
 
 export default ProductServices;

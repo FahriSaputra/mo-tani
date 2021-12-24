@@ -1,10 +1,16 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import MainLayout from "../layout/MainLayout";
 import { TextInput, PrimaryButton } from "../components";
-import { useAddProduct } from "../hooks/mutations/Product.mutations";
-import { useNavigate } from "react-router-dom";
+import {
+  useAddProduct,
+  useUpdateProduct,
+} from "../hooks/mutations/Product.mutations";
+import { useNavigate, useLocation } from "react-router-dom";
+import { queryClient } from "../App";
 
 const AddProduct = () => {
+  const location = useLocation();
+  const { state } = location;
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -15,8 +21,40 @@ const AddProduct = () => {
     utility: "",
     commodity: "",
   });
+
   const navigate = useNavigate();
   const addProduct = useAddProduct();
+  const updateProduct = useUpdateProduct();
+
+  useEffect(() => {
+    if (location?.state === null && location.pathname === "/edit-product") {
+      navigate("/products");
+    }
+
+    if (location?.state !== null) {
+      setForm({
+        name: state?.name,
+        price: state?.price,
+        stock: state?.stock,
+        specification: state?.specification,
+        function: state?.function,
+        utility: state?.utility,
+        commodity: state?.commodity,
+        image: "",
+      });
+    }
+  }, [
+    location.pathname,
+    location?.state,
+    navigate,
+    state?.commodity,
+    state?.function,
+    state?.name,
+    state?.price,
+    state?.specification,
+    state?.stock,
+    state?.utility,
+  ]);
 
   const onChange = useCallback((e) => {
     const name = e.target.name;
@@ -24,27 +62,69 @@ const AddProduct = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", form?.name);
-    formData.append("price", parseInt(form?.price));
-    formData.append("stock", parseInt(form?.stock));
-    formData.append("specification", form?.specification);
-    formData.append("function", form?.function);
-    formData.append("utility", form?.utility);
-    formData.append("commodity", form?.commodity);
-    formData.append("slug", "random");
-    formData.append("image", form?.image[0]);
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      if (location?.pathname !== "/edit-product") {
+        formData.append("name", form?.name);
+        formData.append("price", parseInt(form?.price));
+        formData.append("stock", parseInt(form?.stock));
+        formData.append("specification", form?.specification);
+        formData.append("function", form?.function);
+        formData.append("utility", form?.utility);
+        formData.append("commodity", form?.commodity);
+        formData.append("slug", "random");
+        formData.append("image", form?.image[0]);
 
-    addProduct.mutate(formData, {
-      onError: (e) => console.warn(JSON.stringify(e, null, 2), "Error"),
-      onSuccess: () => {
-        window.alert("Success");
-        navigate("/products");
-      },
-    });
-  };
+        addProduct.mutate(formData, {
+          onError: (e) => console.warn(JSON.stringify(e, null, 2), "Error"),
+          onSuccess: () => {
+            window.alert("Success");
+            navigate("/products");
+          },
+        });
+      } else {
+        formData.append("name", form?.name);
+        formData.append("price", parseInt(form?.price));
+        formData.append("stock", parseInt(form?.stock));
+        formData.append("specification", form?.specification);
+        formData.append("function", form?.function);
+        formData.append("utility", form?.utility);
+        formData.append("commodity", form?.commodity);
+        formData.append("slug", "random");
+        updateProduct.mutate(
+          { data: formData, id: state?.id },
+          {
+            onSuccess: () => {
+              window.alert("Success Update Product");
+              navigate("/products");
+              queryClient?.invalidateQueries("products");
+            },
+            onError: () => {
+              window.alert("Failed Update Product, try again later");
+              navigate("/products");
+            },
+          }
+        );
+      }
+    },
+    [
+      addProduct,
+      form?.commodity,
+      form?.function,
+      form?.image,
+      form?.name,
+      form?.price,
+      form?.specification,
+      form?.stock,
+      form?.utility,
+      location?.pathname,
+      navigate,
+      state?.id,
+      updateProduct,
+    ]
+  );
 
   return (
     <MainLayout className="bg-gray-200">
@@ -91,14 +171,17 @@ const AddProduct = () => {
                 </optgroup>
               </select>
             </div>
-            <TextInput
-              name="image"
-              label="Product Image"
-              containerStyle="mt-5"
-              type="file"
-              onChange={onChange}
-            />
-            {form?.image ? (
+            {location?.pathname !== "/edit-product" && (
+              <TextInput
+                name="image"
+                label="Product Image"
+                containerStyle="mt-5"
+                type="file"
+                onChange={onChange}
+              />
+            )}
+
+            {location?.pathname !== "/edit-product" && form?.image ? (
               // eslint-disable-next-line jsx-a11y/img-redundant-alt
               <img
                 src={URL.createObjectURL(form?.image[0])}
@@ -135,7 +218,12 @@ const AddProduct = () => {
             />
             <div className="flex justify-end">
               <div className="mt-5 md:w-32">
-                <PrimaryButton title="Add" type="submit" />
+                <PrimaryButton
+                  title={
+                    location?.pathname === "/edit-product" ? "Edit" : "Add"
+                  }
+                  type="submit"
+                />
               </div>
             </div>
           </form>

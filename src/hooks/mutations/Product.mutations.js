@@ -12,4 +12,16 @@ const useAddProduct = () =>
 
 const useDeleteProduct = () => useMutation(ProductServices.deleteProduct);
 
-export { useAddProduct, useDeleteProduct };
+const useUpdateProduct = () =>
+  useMutation(({ data, id }) =>
+    ProductServices.updateProduct(
+      { data, id },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    )
+  );
+
+export { useAddProduct, useDeleteProduct, useUpdateProduct };
